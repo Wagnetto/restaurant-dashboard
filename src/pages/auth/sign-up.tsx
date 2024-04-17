@@ -47,7 +47,7 @@ export function SignUp() {
     <>
       <Helmet title="Cadastro" />
       <div className="p-8">
-        <Button asChild variant="outline" className="absolute right-8 top-8">
+        <Button asChild variant="ghost" className="absolute right-8 top-8">
           <Link to="/sign-in">Fazer Login</Link>
         </Button>
         <div className="flex w-[340px] flex-col justify-center gap-6">
