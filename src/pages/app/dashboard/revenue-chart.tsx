@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/card'
 
 const data = [
+  { date: '04/05', revenue: 850 },
   { date: '05/05', revenue: 1200 },
   { date: '06/05', revenue: 1100 },
   { date: '07/05', revenue: 800 },
