@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { getManagedRestaurant } from '@/api/get-managed-restaurant'
+import { updateProfile } from '@/api/update-profile'
 
 import { Button } from './ui/button'
 import {
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -22,15 +25,20 @@ const storeProfileSchema = z.object({
   description: z.string(),
 })
 
-type StoreProfileForm = z.infer<typeof storeProfileSchema>
+type StoreProfileSchema = z.infer<typeof storeProfileSchema>
 
 export function StoreProfileDialog() {
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
     queryFn: getManagedRestaurant,
+    staleTime: Infinity,
   })
 
-  const { register, handleSubmit } = useForm<StoreProfileForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<StoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     values: {
       name: managedRestaurant?.name ?? '',
@@ -38,7 +46,22 @@ export function StoreProfileDialog() {
     },
   })
 
-  console.log(managedRestaurant)
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+  })
+
+  async function handleUpdateProfile(data: StoreProfileSchema) {
+    try {
+      await updateProfileFn({
+        name: data.name,
+        description: data.description,
+      })
+
+      toast.success('Perfil atualizado com sucesso!')
+    } catch {
+      toast.error('Falha ao atualizar o perfil, tente novamente.')
+    }
+  }
 
   return (
     <DialogContent>
@@ -50,7 +73,7 @@ export function StoreProfileDialog() {
         </DialogDescription>
       </DialogHeader>
 
-      <form>
+      <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
@@ -72,10 +95,12 @@ export function StoreProfileDialog() {
         </div>
 
         <DialogFooter>
-          <Button variant="ghost" type="button">
-            Cancelar
-          </Button>
-          <Button type="submit" variant="success">
+          <DialogClose asChild>
+            <Button variant="ghost" type="button">
+              Cancelar
+            </Button>
+          </DialogClose>
+          <Button type="submit" variant="success" disabled={isSubmitting}>
             Salvar
           </Button>
         </DialogFooter>
