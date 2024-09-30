@@ -11,8 +11,17 @@ import {
 
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
+import { useQuery } from '@tanstack/react-query'
+import { getOrders } from '@/api/get-orders'
+
 
 export function Orders() {
+
+  const {data: result} = useQuery({
+    queryKey: ['orders'],
+    queryFn: getOrders,
+  });
+  
   return (
     <>
       <Helmet title="Pedidos" />
@@ -38,8 +47,8 @@ export function Orders() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Array.from({ length: 10 }).map((_, i) => {
-                  return <OrderTableRow key={i} />
+                {result && result.orders.map(order => {
+                  return <OrderTableRow key={order.orderId} order={order} />
                 })}
               </TableBody>
             </Table>
