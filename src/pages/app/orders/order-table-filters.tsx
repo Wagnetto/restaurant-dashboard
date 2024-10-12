@@ -29,28 +29,29 @@ export function OrderTableFilters() {
   const customerName = searchParams.get('customerName')
   const status = searchParams.get('status')
 
-  const { register, handleSubmit, control, reset } = useForm<OrderFiltersSchema>({
-    resolver: zodResolver(orderFiltersSchema),
-    defaultValues: {
-      orderId: orderId ?? '',
-      customerName: customerName ?? '',
-      status: status ?? 'all',
-    }
-  })
+  const { register, handleSubmit, control, reset } =
+    useForm<OrderFiltersSchema>({
+      resolver: zodResolver(orderFiltersSchema),
+      defaultValues: {
+        orderId: orderId ?? '',
+        customerName: customerName ?? '',
+        status: status ?? 'all',
+      },
+    })
 
   function handleFilter({ orderId, customerName, status }: OrderFiltersSchema) {
-    setSearchParams(state => {
-      if(orderId) {
+    setSearchParams((state) => {
+      if (orderId) {
         state.set('orderId', orderId)
       } else {
         state.delete('orderId')
       }
-      if(customerName) {
+      if (customerName) {
         state.set('customerName', customerName)
       } else {
         state.delete('customerName')
       }
-      if(status) {
+      if (status) {
         state.set('status', status)
       } else {
         state.delete('status')
@@ -61,22 +62,21 @@ export function OrderTableFilters() {
     })
   }
 
-  function handleClearFilters(){
-    setSearchParams(state => {
+  function handleClearFilters() {
+    setSearchParams((state) => {
       state.delete('orderId')
       state.delete('customerName')
       state.delete('status')
       state.set('page', '1')
-      
+
       return state
     })
 
     reset({
       orderId: '',
       customerName: '',
-      status: 'all'
+      status: 'all',
     })
-
   }
 
   return (
@@ -128,7 +128,12 @@ export function OrderTableFilters() {
         Filtrar resultados
       </Button>
 
-      <Button onClick={handleClearFilters} type="button" variant="outline" size="sm">
+      <Button
+        onClick={handleClearFilters}
+        type="button"
+        variant="outline"
+        size="sm"
+      >
         <X className="mr-2 h-4 w-4" />
         Remover filtros
       </Button>

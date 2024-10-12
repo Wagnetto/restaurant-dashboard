@@ -22,13 +22,18 @@ export interface GetOrdersResponse {
   }
 }
 
-export async function getOrders({ pageIndex, orderId, customerName, status }: GetOrdersQuery) {
+export async function getOrders({
+  pageIndex,
+  orderId,
+  customerName,
+  status,
+}: GetOrdersQuery) {
   const response = await api.get<GetOrdersResponse>('/orders', {
     params: {
       pageIndex,
       orderId,
       customerName,
-      status
+      status,
     },
   })
   return response.data
