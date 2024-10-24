@@ -1,3 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 import { getOrderDetails } from "@/api/get-order-details";
 import { OrderStatus } from "@/components/order-status";
 import {
@@ -15,9 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { formatDistanceToNow } from "date-fns";
-import { ptBR } from "date-fns/locale";
+
 import { OrderDetailsSkeleton } from "./order-details-skeleton";
 
 export interface OrderDetailsProps {
@@ -26,15 +28,11 @@ export interface OrderDetailsProps {
 }
 
 export function OrderDetails({ orderId, open }: OrderDetailsProps) {
-  const { data: order, isLoading: isLoadingOrderDetails } = useQuery({
+  const { data: order } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => getOrderDetails({ orderId }),
     enabled: open,
   });
-
-  if (!order) {
-    return null;
-  }
 
   return (
     <DialogContent>
@@ -42,7 +40,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
         <DialogTitle>Pedido: {orderId}</DialogTitle>
         <DialogDescription>Detalhes do pedido</DialogDescription>
       </DialogHeader>
-      {/* {isLoadingOrderDetails && <OrderDetailsSkeleton />} */}
+
       {order ? (
         <div className="space-y-6">
           <Table>
@@ -97,31 +95,27 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {order.orderItems.map((item) => {
-                return (
-                  <TableRow>
-                    <TableCell>{item.product.name}</TableCell>
-                    <TableCell className="text-right">
-                      {item.quantity}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {(item.priceInCents / 100).toLocaleString("pt-BR", {
+              {order.orderItems.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell>{item.product.name}</TableCell>
+                  <TableCell className="text-right">{item.quantity}</TableCell>
+                  <TableCell className="text-right">
+                    {(item.priceInCents / 100).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {((item.priceInCents * item.quantity) / 100).toLocaleString(
+                      "pt-BR",
+                      {
                         style: "currency",
                         currency: "BRL",
-                      })}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {(
-                        (item.priceInCents * item.quantity) /
-                        100
-                      ).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      },
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
             <TableFooter>
               <TableRow>
