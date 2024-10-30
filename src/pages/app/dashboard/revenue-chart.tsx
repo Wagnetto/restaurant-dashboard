@@ -1,3 +1,8 @@
+import { useQuery } from '@tanstack/react-query'
+import { subDays } from 'date-fns'
+import { Loader2 } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { DateRange } from 'react-day-picker'
 import {
   CartesianGrid,
   Line,
@@ -8,6 +13,7 @@ import {
 } from 'recharts'
 import colors from 'tailwindcss/colors'
 
+import { getDailyRevenueInPeriod } from '@/api/get-daily-revenue-in-period'
 import {
   Card,
   CardContent,
@@ -15,38 +21,32 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useQuery } from "@tanstack/react-query";
-import { getDailyRevenueInPeriod } from "@/api/get-daily-revenue-in-period";
-import { Label } from "@/components/ui/label";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { useMemo, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { subDays } from "date-fns";
-import { Loader2 } from "lucide-react";
+import { DateRangePicker } from '@/components/ui/date-range-picker'
+import { Label } from '@/components/ui/label'
 
 export function RevenueChart() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
     to: new Date(),
-  });
+  })
 
   const { data: dailyRevenueInPeriod } = useQuery({
-    queryKey: ["metrics", "daily-receipt-in-period", dateRange],
+    queryKey: ['metrics', 'daily-receipt-in-period', dateRange],
     queryFn: () =>
       getDailyRevenueInPeriod({
         from: dateRange?.from,
         to: dateRange?.to,
       }),
-  });
+  })
 
   const chartData = useMemo(() => {
     return dailyRevenueInPeriod?.map((item) => {
       return {
         date: item.date,
         receipt: item.receipt / 100,
-      };
-    });
-  }, [dailyRevenueInPeriod]);
+      }
+    })
+  }, [dailyRevenueInPeriod])
 
   return (
     <Card className="col-span-6">
@@ -73,18 +73,18 @@ export function RevenueChart() {
                 tickLine={false}
                 width={80}
                 tickFormatter={(value: number) =>
-                  value.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
+                  value.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
                   })
                 }
               />
               <CartesianGrid vertical={false} className="stroke-muted" />
               <Line
-                type={"linear"}
+                type={'linear'}
                 strokeWidth={2}
                 dataKey="receipt"
-                stroke={colors.violet["400"]}
+                stroke={colors.violet['400']}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -95,5 +95,5 @@ export function RevenueChart() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

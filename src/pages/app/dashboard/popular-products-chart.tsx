@@ -1,24 +1,24 @@
-import { BarChart, Loader2 } from "lucide-react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
-import colors from "tailwindcss/colors";
+import { useQuery } from '@tanstack/react-query'
+import { BarChart, Loader2 } from 'lucide-react'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import colors from 'tailwindcss/colors'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { getPopularProducts } from "@/api/get-popular-products";
+import { getPopularProducts } from '@/api/get-popular-products'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const productColors = [
-  colors.sky["500"],
-  colors.amber["500"],
-  colors.violet["500"],
-  colors.emerald["500"],
-  colors.rose["500"],
-];
+  colors.sky['500'],
+  colors.amber['500'],
+  colors.violet['500'],
+  colors.emerald['500'],
+  colors.rose['500'],
+]
 
 export function PopularProductsChart() {
   const { data: popularProducts } = useQuery({
-    queryKey: ["metrics", "popular-products"],
+    queryKey: ['metrics', 'popular-products'],
     queryFn: getPopularProducts,
-  });
+  })
 
   return (
     <Card className="col-span-3">
@@ -53,27 +53,27 @@ export function PopularProductsChart() {
                   value,
                   index,
                 }) => {
-                  const RADIAN = Math.PI / 180;
-                  const radius = 12 + innerRadius + (outerRadius - innerRadius);
-                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  const RADIAN = Math.PI / 180
+                  const radius = 12 + innerRadius + (outerRadius - innerRadius)
+                  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+                  const y = cy + radius * Math.sin(-midAngle * RADIAN)
 
                   return (
                     <text
                       x={x}
                       y={y}
                       className="fill-muted-foreground text-xs"
-                      textAnchor={x > cx ? "start" : "end"}
+                      textAnchor={x > cx ? 'start' : 'end'}
                       dominantBaseline="central"
                     >
                       {popularProducts[index].product.length > 12
                         ? popularProducts[index].product
                             .substring(0, 12)
-                            .concat("...")
-                        : popularProducts[index].product}{" "}
+                            .concat('...')
+                        : popularProducts[index].product}{' '}
                       ({value})
                     </text>
-                  );
+                  )
                 }}
               >
                 {popularProducts.map((_, index) => {
@@ -83,7 +83,7 @@ export function PopularProductsChart() {
                       fill={productColors[index]}
                       className="stroke-background hover:opacity-80"
                     />
-                  );
+                  )
                 })}
               </Pie>
             </PieChart>
@@ -95,5 +95,5 @@ export function PopularProductsChart() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }
