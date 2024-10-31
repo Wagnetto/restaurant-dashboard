@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode local",
     "dev:test": "vite --port 50789 --mode test",
     "dev:sandbox": "vite --port 12345 --mode sandbox",
     "build": "tsc && vite build",
