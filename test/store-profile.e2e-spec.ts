@@ -9,6 +9,8 @@ test('update profile successfully', async ({ page }) => {
   page.getByLabel('Descrição').fill('Vegan Description')
   page.getByRole('button', { name: 'Salvar' }).click()
 
+  await page.waitForLoadState('networkidle')
+
   const successToast = page.getByText('Perfil atualizado com sucesso!')
   await expect(successToast).toBeVisible()
 
