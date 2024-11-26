@@ -4,9 +4,9 @@ test('update profile successfully', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' })
 
   await page.getByRole('button', { name: 'Burger House' }).click()
-  page.getByRole('menuitem', { name: 'Perfil da loja' }).click()
-  page.getByLabel('Nome').fill('Vegan Burger')
-  page.getByLabel('Descrição').fill('Vegan Description')
+  await page.getByRole('menuitem', { name: 'Perfil da loja' }).click()
+  await page.getByLabel('Nome').fill('Vegan Burger')
+  await page.getByLabel('Descrição').fill('Vegan Description')
   page.getByRole('button', { name: 'Salvar' }).click()
 
   await page.waitForLoadState('networkidle')
@@ -23,9 +23,9 @@ test('update profile with error', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' })
 
   await page.getByRole('button', { name: 'Burger House' }).click()
-  page.getByRole('menuitem', { name: 'Perfil da loja' }).click()
-  page.getByLabel('Nome').fill('Wrong Name')
-  page.getByLabel('Descrição').fill('Wrong Description')
+  await page.getByRole('menuitem', { name: 'Perfil da loja' }).click()
+  await page.getByLabel('Nome').fill('Wrong Name')
+  await page.getByLabel('Descrição').fill('Wrong Description')
   page.getByRole('button', { name: 'Salvar' }).click()
 
   const errorToast = page.getByText(
