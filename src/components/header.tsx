@@ -1,4 +1,4 @@
-import { HandPlatter, Home, Pizza, UtensilsCrossed } from 'lucide-react'
+import { HandPlatter, Home, UtensilsCrossed } from 'lucide-react'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
