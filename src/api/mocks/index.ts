@@ -39,7 +39,8 @@ export const setup = setupWorker(
 )
 
 export async function enableMSW() {
-  if (env.MODE !== 'test') {
+  // redirecting production environment to the mocked data
+  if (env.MODE !== 'test' && process.env.NODE_ENV !== 'production') {
     return
   }
 
