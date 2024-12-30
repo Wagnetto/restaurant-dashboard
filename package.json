@@ -1,12 +1,11 @@
 {
-  "name": "pizza-shop-dashboard",
+  "name": "restaurant-dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode local",
+    "dev": "vite --mode development",
     "dev:test": "vite --port 50789 --mode test",
-    "dev:sandbox": "vite --port 12345 --mode sandbox",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --ext .tsx,.ts --fix",
