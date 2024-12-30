@@ -1,5 +1,10 @@
 # 🍕 Restaurant Dashboard
 
+
+
+https://github.com/user-attachments/assets/6a67ebd5-b915-46d1-b578-66cb5a654f78
+
+
 `[pt-BR]`
 
 Este repositório contém um dashboard para gerenciamento de pedidos de entrega de um restaurante, projetado para facilitar o acompanhamento de status de pedidos e métricas importantes. O projeto utiliza React, Tailwind CSS e componentes do Shadcn-ui. Ele está configurado para funcionar sem a necessidade de uma API externa, graças ao MSW, mas pode ser utilizado com uma API criada em NodeJS.
